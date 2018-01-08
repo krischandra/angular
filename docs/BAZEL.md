@@ -17,6 +17,22 @@ you run the first build.
 
 [install]: https://bazel.build/versions/master/docs/install.html
 
+Note: recent XCode update on Mac causes the following Bazel error
+```
+$ bazel build packages/...
+ERROR: /private/var/tmp/_bazel_iminar/9b8801a4939e9750a817dc0cb35bbbca/external/local_config_cc/BUILD:50:5: in apple_cc_toolchain rule @local_config_cc//:cc-compiler-darwin_x86_64: Xcode version must be specified to use an Apple CROSSTOOL
+ERROR: Analysis of target '//packages/core/test/render3:render3' failed; build aborted: Analysis of target '@local_config_cc//:cc-compiler-darwin_x86_64' failed; build aborted
+```
+To resolve the error do the following:
+```
+bazel clean --expunge
+sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+sudo xcodebuild -license
+bazel build packages/...
+```
+Source: https://stackoverflow.com/questions/45276830/xcode-version-must-be-specified-to-use-an-apple-crosstool
+
+
 ## Configuration
 
 The `WORKSPACE` file indicates that our root directory is a
